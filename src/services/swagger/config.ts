@@ -22,6 +22,7 @@ const options = {
     },
 };
 
+
 if (process.env.URL_API_ONLINE_SWAGGER) {
     options.definition.servers.unshift({
         url: `${process.env.URL_API_ONLINE_SWAGGER}`,
