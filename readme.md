@@ -16,3 +16,6 @@ Yarn
 # Como rodar o projeto
 
 yarn start
+
+# HOSPEDAGEM ONLINE
+https://origin9-teste-api-production.up.railway.app
