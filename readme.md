@@ -18,4 +18,5 @@ Yarn
 yarn start
 
 # HOSPEDAGEM ONLINE
-https://origin9-teste-api-production.up.railway.app
+
+https://origin9-teste-api-production.up.railway.app/api-docs/
