@@ -99,7 +99,6 @@ class UserAdmControllerClass {
                 rows: resultptBR,
                 status: "Sucesso",
                 modal: FormModalUser,
-                endpoint: "/admins",
                 title: "Administrador",
                 columns: columns,
             });

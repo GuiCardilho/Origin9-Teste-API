@@ -79,7 +79,6 @@ class UserControllerClass {
                 rows: resultptBR,
                 status: "Sucesso",
                 modal: FormModalUser,
-                endpoint: "/users",
                 title: "Usuario",
                 columns: columns,
             });
