@@ -1,17 +1,16 @@
 import { Response, Request } from "express";
-import { User } from "../../model/user/user.model";
 import { regexCPF, regexData, regexDataBanco } from "../../util/regex";
-import { generateUsers } from "../../util/faker";
 import moment from "moment";
+import { UserAdm } from "../../model/user/user.adm.model";
 
-class UserControllerClass {
+class UserAdmControllerClass {
     async getAllUser(req: Request, res: Response) {
         try {
             const { search } = req.query || "";
 
             const regex = new RegExp(search as string, "i");
 
-            const result = await User.find({
+            const result = await UserAdm.find({
                 $or: [
                     { nome: regex },
                     { data_nascimento: regex },
@@ -55,6 +54,11 @@ class UserControllerClass {
                     placeholder: "Insira o endereço",
                 },
                 {
+                    title: "Função principal",
+                    name: "funcao",
+                    placeholder: "Insira a funcao principal",
+                },
+                {
                     title: "Status",
                     name: "status",
                     select: {
@@ -62,6 +66,20 @@ class UserControllerClass {
                             { value: "", text: "Selecione uma opção" },
                             { value: "Ativo", text: "Ativo" },
                             { value: "Inativo", text: "Inativo" },
+                        ],
+                    },
+                },
+                {
+                    title: "Cargo",
+                    name: "cargo",
+                    select: {
+                        options: [
+                            { value: "", text: "Selecione uma opção" },
+                            { value: "CEO", text: "CEO" },
+                            { value: "COO", text: "COO" },
+                            { value: "DEVJR", text: "Dev. Jr." },
+                            { value: "DEVPL", text: "Dev. Pl." },
+                            { value: "DEVSR", text: "Dev. Sr." },
                         ],
                     },
                 },
@@ -73,14 +91,16 @@ class UserControllerClass {
                 data_nascimento: "Data De Nascimento",
                 endereco: "Endereço",
                 status: "Status",
+                cargo: "Cargo",
+                funcao: "Função Principal",
             };
 
             return res.status(200).json({
                 rows: resultptBR,
                 status: "Sucesso",
                 modal: FormModalUser,
-                endpoint: "/users",
-                title: "Usuario",
+                endpoint: "/admins",
+                title: "Administrador",
                 columns: columns,
             });
         } catch (error) {
@@ -102,7 +122,7 @@ class UserControllerClass {
                 });
             }
 
-            const result = await User.findById(id);
+            const result = await UserAdm.findById(id);
 
             return res.status(200).json({
                 rows: result,
@@ -116,44 +136,27 @@ class UserControllerClass {
         }
     }
 
-    async getRandomUsers(req: Request, res: Response) {
-        try {
-            const amount = parseInt(req.query.amount as string, 10) || 0;
-
-            let arrayUser = [];
-            if (!isNaN(amount)) {
-                for (let index = 0; index < amount; index++) {
-                    const user = generateUsers();
-                    arrayUser.push(user);
-                }
-            }
-
-            const columns = {
-                nome: "Nome",
-                data_nascimento: "Data de nascimento",
-                cpf: "CPF",
-                endereco: "Endereço",
-                status: "Status",
-            };
-
-            return res.status(200).json({
-                message: "Sucesso",
-                rows: arrayUser,
-                columns: columns,
-            });
-        } catch (error) {
-            return res.status(500).json({
-                status: "Falha",
-                message: `Erro inesperado: ${error}`,
-            });
-        }
-    }
-
     async postUser(req: Request, res: Response) {
         try {
-            const { nome, data_nascimento, cpf, endereco, status } = req.body;
+            const {
+                nome,
+                data_nascimento,
+                cpf,
+                endereco,
+                status,
+                cargo,
+                funcao,
+            } = req.body;
 
-            if (!nome || !data_nascimento || !cpf || !endereco || !status) {
+            if (
+                !nome ||
+                !data_nascimento ||
+                !cpf ||
+                !endereco ||
+                !status ||
+                !cargo ||
+                !funcao
+            ) {
                 return res.status(400).json({
                     status: "Falha",
                     message: "Ausência  de dado(s) requirido",
@@ -176,7 +179,7 @@ class UserControllerClass {
                 });
             }
 
-            const verifyCPF = await User.countDocuments({ cpf: cpf });
+            const verifyCPF = await UserAdm.countDocuments({ cpf: cpf });
             if (verifyCPF) {
                 return res.status(400).json({
                     status: "Falha",
@@ -190,9 +193,11 @@ class UserControllerClass {
                 cpf,
                 endereco,
                 status,
+                cargo,
+                funcao,
             };
 
-            const result = await User.create(payload);
+            const result = await UserAdm.create(payload);
 
             return res.status(200).json({ user: result, status: "Sucesso" });
         } catch (error) {
@@ -205,10 +210,18 @@ class UserControllerClass {
 
     async putUser(req: Request, res: Response) {
         try {
-            const { nome, data_nascimento, cpf, endereco, status } = req.body;
+            const {
+                nome,
+                data_nascimento,
+                cpf,
+                endereco,
+                status,
+                cargo,
+                funcao,
+            } = req.body;
             const { id } = req.params;
 
-            const verify = User.countDocuments({ _id: id });
+            const verify = UserAdm.countDocuments({ _id: id });
             if (!verify) {
                 return res.status(400).json({
                     status: "Falha",
@@ -240,7 +253,7 @@ class UserControllerClass {
                 });
             }
 
-            const verifyCPF = await User.countDocuments({
+            const verifyCPF = await UserAdm.countDocuments({
                 cpf: cpf,
                 _id: { $ne: id },
             });
@@ -258,10 +271,12 @@ class UserControllerClass {
                 cpf,
                 endereco,
                 status,
+                cargo,
+                funcao,
             };
 
-            await User.findOneAndUpdate({ _id: id }, payload);
-            const result = await User.findById(id);
+            await UserAdm.findOneAndUpdate({ _id: id }, payload);
+            const result = await UserAdm.findById(id);
 
             return res.status(200).json({ user: result, status: "Sucesso" });
         } catch (error) {
@@ -276,7 +291,7 @@ class UserControllerClass {
         try {
             const { id } = req.params;
 
-            const verify = User.countDocuments({ _id: id });
+            const verify = UserAdm.countDocuments({ _id: id });
             if (!verify) {
                 return res.status(400).json({
                     status: "Falha",
@@ -284,7 +299,7 @@ class UserControllerClass {
                 });
             }
 
-            await User.deleteOne({ _id: id });
+            await UserAdm.deleteOne({ _id: id });
 
             return res.status(200).json({ status: "Sucesso" });
         } catch (error) {
@@ -296,4 +311,4 @@ class UserControllerClass {
     }
 }
 
-export const UserController = new UserControllerClass();
+export const UserAdmController = new UserAdmControllerClass();
