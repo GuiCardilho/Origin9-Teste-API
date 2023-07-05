@@ -3,6 +3,7 @@ import { User } from "../../model/user/user.model";
 import { regexCPF, regexData, regexDataBanco } from "../../util/regex";
 import { generateUsers } from "../../util/faker";
 import moment from "moment";
+import { stat } from "fs";
 
 class UserControllerClass {
     async getAllUser(req: Request, res: Response) {
@@ -79,9 +80,19 @@ class UserControllerClass {
                 }
             }
 
-            return res
-                .status(200)
-                .json({ message: "Sucesso", users: arrayUser });
+            const columns = {
+                nome: "Nome",
+                data_nascimento: "Data de nascimento",
+                cpf: "CPF",
+                endereco: "Endereço",
+                status: "Status",
+            };
+
+            return res.status(200).json({
+                message: "Sucesso",
+                rows: arrayUser,
+                columns: columns,
+            });
         } catch (error) {
             return res.status(500).json({
                 status: "Falha",
@@ -89,6 +100,8 @@ class UserControllerClass {
             });
         }
     }
+
+    
 
     async postUser(req: Request, res: Response) {
         try {
