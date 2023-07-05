@@ -21,7 +21,9 @@ Yarn
 2 - Passo - Digite no terminal
 `yarn start`
 
-3 - Passo - Acessar:
+3 - Passo - Esperar os consoles de servidor rodando e banco de dados conectado
+
+4 - Passo - Acessar:
 http://localhost:9000/api-docs
 
 # HOSPEDAGEM ONLINE
