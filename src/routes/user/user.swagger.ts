@@ -15,29 +15,6 @@
 
 /**
  * @swagger
- * /users/random:
- *      get:
- *          summary: Retorna usuarios aleatorios
- *          tags:
- *              - Random
- *          parameters:
- *              - name: amount
- *                in: query
- *                example: 10
- *                description: Quantidade de usuarios
- *                required: true
- *                schema:
- *                    type: string
- *
- *          responses:
- *              200:
- *                  description: Sucesso
- *              500:
- *                  description: Erro não esperado
- */
-
-/**
- * @swagger
  * /users:
  *      post:
  *          summary: Cria um usuario

@@ -1,6 +1,29 @@
 /**
  * @swagger
- * /admin/random:
+ * /random/users:
+ *      get:
+ *          summary: Retorna usuarios aleatorios
+ *          tags:
+ *              - Random
+ *          parameters:
+ *              - name: amount
+ *                in: query
+ *                example: 10
+ *                description: Quantidade de usuarios
+ *                required: true
+ *                schema:
+ *                    type: string
+ *
+ *          responses:
+ *              200:
+ *                  description: Sucesso
+ *              500:
+ *                  description: Erro não esperado
+ */
+
+/**
+ * @swagger
+ * /random/admin:
  *      get:
  *          summary: Gera usuarios aleatorios
  *          tags:
@@ -23,7 +46,7 @@
 
 /**
  * @swagger
- * /company/random:
+ * /random/company:
  *      get:
  *          summary: Gera companias aleatorias
  *          tags:
@@ -46,7 +69,7 @@
 
 /**
  * @swagger
- * /product/random:
+ * /random/product:
  *      get:
  *          summary: Gera produtos aleatorias
  *          tags:
@@ -69,7 +92,7 @@
 
 /**
  * @swagger
- * /category/random:
+ * /random/category:
  *      get:
  *          summary: Gera categorias aleatorias
  *          tags:
@@ -92,7 +115,7 @@
 
 /**
  * @swagger
- * /coupon/random:
+ * /random/coupon:
  *      get:
  *          summary: Gera cupons aleatorios
  *          tags:
