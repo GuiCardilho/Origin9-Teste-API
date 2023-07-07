@@ -85,22 +85,11 @@ class UserAdmControllerClass {
                 },
             ];
 
-            const columns = {
-                nome: "Nome",
-                cpf: "CPF",
-                data_nascimento: "Data De Nascimento",
-                endereco: "Endereço",
-                status: "Status",
-                cargo: "Cargo",
-                funcao: "Função Principal",
-            };
-
             return res.status(200).json({
                 rows: resultptBR,
                 status: "Sucesso",
                 modal: FormModalUser,
                 title: "Administrador",
-                columns: columns,
             });
         } catch (error) {
             return res.status(500).json({

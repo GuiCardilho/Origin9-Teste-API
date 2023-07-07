@@ -7,7 +7,6 @@ routes.delete("/users/:id", UserController.deleteUser);
 
 routes.put("/users/:id", UserController.putUser);
 
-routes.get("/users/random", UserController.getRandomUsers);
 routes.get("/users/:id", UserController.getByIdUser);
 routes.get("/users", UserController.getAllUser);
 

@@ -1,7 +1,6 @@
 import { Response, Request } from "express";
 import { User } from "../../model/user/user.model";
 import { regexCPF, regexData, regexDataBanco } from "../../util/regex";
-import { generateUsers } from "../../util/faker";
 import moment from "moment";
 
 class UserControllerClass {
@@ -67,20 +66,11 @@ class UserControllerClass {
                 },
             ];
 
-            const columns = {
-                nome: "Nome",
-                cpf: "CPF",
-                data_nascimento: "Data De Nascimento",
-                endereco: "Endereço",
-                status: "Status",
-            };
-
             return res.status(200).json({
                 rows: resultptBR,
                 status: "Sucesso",
                 modal: FormModalUser,
                 title: "Usuario",
-                columns: columns,
             });
         } catch (error) {
             return res.status(500).json({
@@ -106,39 +96,6 @@ class UserControllerClass {
             return res.status(200).json({
                 rows: result,
                 status: "Sucesso",
-            });
-        } catch (error) {
-            return res.status(500).json({
-                status: "Falha",
-                message: `Erro inesperado: ${error}`,
-            });
-        }
-    }
-
-    async getRandomUsers(req: Request, res: Response) {
-        try {
-            const amount = parseInt(req.query.amount as string, 10) || 0;
-
-            let arrayUser = [];
-            if (!isNaN(amount)) {
-                for (let index = 0; index < amount; index++) {
-                    const user = generateUsers();
-                    arrayUser.push(user);
-                }
-            }
-
-            const columns = {
-                nome: "Nome",
-                data_nascimento: "Data de nascimento",
-                cpf: "CPF",
-                endereco: "Endereço",
-                status: "Status",
-            };
-
-            return res.status(200).json({
-                message: "Sucesso",
-                rows: arrayUser,
-                columns: columns,
             });
         } catch (error) {
             return res.status(500).json({

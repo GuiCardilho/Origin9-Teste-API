@@ -53,7 +53,7 @@ export const generateCoupon = () => ({
     categoria: faker.commerce.department(),
     vl_total: faker.number.int({ min: 10, max: 100 }),
     desconto: faker.number.int({ min: 1, max: 10 }),
-    status: function () {
+    vl_desconto: function () {
         const valorComDesconto =
             this.vl_total - this.vl_total * (this.desconto / 100);
         return valorComDesconto.toFixed(2);
